@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kotlin.examen_a01709413_uri.data.network.model.CovidData
 import com.example.kotlin.examen_a01709413_uri.databinding.MainActivityBinding
 import com.example.kotlin.examen_a01709413_uri.framework.adapter.Adapter
 import com.example.kotlin.examen_a01709413_uri.framework.viewModel.MainViewModel
@@ -11,14 +12,14 @@ import com.example.kotlin.examen_a01709413_uri.framework.viewModel.MainViewModel
 class MainActivity: AppCompatActivity()  {
     private lateinit var binding: MainActivityBinding
     private val adapter : Adapter = Adapter()
-    private lateinit var data:ArrayList<Object>
+    private lateinit var data:ArrayList<CovidData>
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initializeBinding()
-        viewModel.getMovieList()
+        viewModel.getList()
     }
 
     private fun initializeBinding() {
@@ -26,7 +27,7 @@ class MainActivity: AppCompatActivity()  {
         setContentView(binding.root)
     }
 
-    private fun setUpRecyclerView(dataForList: List<Object>) {
+    private fun setUpRecyclerView(dataForList: List<CovidData>) {
         binding.recyclerview.setHasFixedSize(true)
 
         val linearLayoutManager = LinearLayoutManager(this)
