@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">examen_a01709413_uri</string>
+    <string name="total_cases_format">Casos Totales: %d</string>
+    <string name="new_cases_format">Nuevos Casos: %d</string>
 </resources>
