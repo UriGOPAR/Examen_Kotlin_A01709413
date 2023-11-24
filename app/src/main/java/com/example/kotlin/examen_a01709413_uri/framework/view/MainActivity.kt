@@ -30,7 +30,7 @@ class MainActivity: AppCompatActivity() {
 
         setUpRecyclerView()
         initializeObservers()
-        viewModel.getCovid("mexico")
+        viewModel.getCovid("china")
     }
 
     private fun setUpRecyclerView() {
