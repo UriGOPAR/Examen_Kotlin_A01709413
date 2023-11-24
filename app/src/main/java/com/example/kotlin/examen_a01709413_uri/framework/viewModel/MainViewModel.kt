@@ -1,30 +1,25 @@
 package com.example.kotlin.examen_a01709413_uri.framework.viewModel
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kotlin.examen_a01709413_uri.data.Repository
 import com.example.kotlin.examen_a01709413_uri.data.network.model.CovidData
-import com.example.kotlin.examen_a01709413_uri.domain.ListRequirement
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class MainViewModel: ViewModel() {
-    val liveData = MutableLiveData<CovidData?>()
-    private val listRequirement = ListRequirement()
+class MainViewModel(private val Repository: Repository) : ViewModel() {
 
-    fun getList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result: CovidData? = listRequirement()
-            if (result != null) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    liveData.postValue(result)
-                }
-            } else {
-                // Manejar el caso en que result es nulo, por ejemplo, mostrar un mensaje de error
-                Log.e("MainViewModel", "Result is null")
-            }
+    private val _covidData = MutableLiveData<List<CovidData>>()
+    val covidData: LiveData<List<CovidData>> = _covidData
+
+    fun getCovid(country: String) {
+        viewModelScope.launch {
+            val data = Repository.getCovid(country) ?: emptyList()
+            _covidData.postValue(data)
         }
     }
 }

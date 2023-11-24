@@ -1,23 +1,16 @@
 package com.example.kotlin.examen_a01709413_uri.data
 
-import android.util.Log
+import NetworkModuleID
 import com.example.kotlin.examen_a01709413_uri.data.network.ApiClient
+
+import com.example.kotlin.examen_a01709413_uri.data.network.ApiService
 import com.example.kotlin.examen_a01709413_uri.data.network.model.CovidData
+import retrofit2.Call
+import retrofit2.Callback
 
-class Repository {
-    private val api = ApiClient()
-    suspend fun getList(): CovidData? {
-    Log.d("Repository", "getList() iniciado")
+class Repository(private val apiClient: ApiClient) {
 
-    try {
-        // Suponiendo que hay una llamada a una API o base de datos aquí
-        val data = api.getList()
-            Log.d("Repository", "Datos recibidos: $data")
-
-        return data
-    } catch (e: Exception) {
-        Log.e("Repository", "Error en getList(): ${e.message}")
-        return null
+    suspend fun getCovid(country: String): List<CovidData>? {
+        return apiClient.getCovid(country)
     }
-}
 }
