@@ -31,36 +31,38 @@ class BarChartView(context: Context, attrs: AttributeSet?) : View(context, attrs
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         val maxBarWidth = width - paddingLeft - paddingRight
-        val maxCases = Math.max(totalCases, newCases).toFloat()
+        val fullBarThreshold = 5000
 
-        // Asegúrate de que maxCases no sea 0 para evitar dividir por cero
-        if (maxCases > 0) {
-            val totalBarWidth = Math.max(minBarWidth.toFloat(), maxBarWidth * (totalCases / maxCases))
-            val totalRect = RectF(
-                paddingLeft.toFloat(),
-                paddingTop.toFloat(),
-                paddingLeft + totalBarWidth,
-                paddingTop + 50f // Altura arbitraria para la barra
-            )
-            canvas.drawRect(totalRect, totalPaint)
-
-            val newBarWidth = Math.max(minBarWidth.toFloat(), maxBarWidth * (newCases / maxCases))
-            val newRect = RectF(
-                paddingLeft.toFloat(),
-                paddingTop + 60f,
-                paddingLeft + newBarWidth,
-                paddingTop + 110f
-            )
-            canvas.drawRect(newRect, newPaint)
+        // Calcula la anchura de la barra para el total de casos
+        val totalBarWidth = if (totalCases > fullBarThreshold) {
+            maxBarWidth.toFloat() // Si es mayor a 5000, llena la barra completamente
         } else {
-            // Dibuja alguna representación para cuando no hay casos, como una línea o un texto
-            // Por ejemplo, dibujar una línea que indique "No hay datos"
-            val textPaint = Paint().apply {
-                color = 0xFF000000.toInt() // Color negro
-                textSize = 40f // Tamaño de texto arbitrario
-                textAlign = Paint.Align.CENTER
-            }
-            canvas.drawText("No data", width / 2f, height / 2f, textPaint)
+            maxBarWidth * (totalCases.toFloat() / fullBarThreshold) // De lo contrario, escala proporcionalmente
         }
+
+        // Dibuja el rectángulo para el total de casos
+        val totalRect = RectF(
+            paddingLeft.toFloat(),
+            paddingTop.toFloat(),
+            paddingLeft + totalBarWidth,
+            paddingTop + 50f
+        )
+        canvas.drawRect(totalRect, totalPaint)
+
+        // Calcula la anchura de la barra para los nuevos casos
+        val newBarWidth = if (newCases > fullBarThreshold) {
+            maxBarWidth.toFloat() // Si es mayor a 5000, llena la barra completamente
+        } else {
+            maxBarWidth * (newCases.toFloat() / fullBarThreshold) // De lo contrario, escala proporcionalmente
+        }
+
+        // Dibuja el rectángulo para los nuevos casos
+        val newRect = RectF(
+            paddingLeft.toFloat(),
+            paddingTop + 60f,
+            paddingLeft + newBarWidth,
+            paddingTop + 110f
+        )
+        canvas.drawRect(newRect, newPaint)
     }
 }

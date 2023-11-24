@@ -13,6 +13,8 @@ class viewHolder(private val binding: ItemBinding) : RecyclerView.ViewHolder(bin
     fun bind(covidCase: Map.Entry<String, CaseDetails>, country: String,region: String, context: Context) {
         binding.country.text = country
         binding.zona.text = region
+        binding.date.text = covidCase.key
+
 
         binding.total.text = String.format(context.getString(R.string.total_cases_format), covidCase.value.total)
         binding.nuevos.text = String.format(context.getString(R.string.new_cases_format), covidCase.value.new)
